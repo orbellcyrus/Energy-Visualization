@@ -8,11 +8,14 @@ boolean useCategories = true;
 boolean useRegions = false;
 
 //Top 32 most populated countries with data
-StringList countryCodes = new StringList("IND", "CHN", "USA", 
+StringList countryCodesPie = new StringList("IND", "CHN", "USA", 
 "IDN", "PAK", "BRA", "BGD", "RUS", "MEX", "JPN", 
 "EGY", "PHL", "VNM", "IRN", "TUR", "DEU", "THA", "GBR", "FRA",
  "ZAF", "ITA", "COL", "KOR", "DZA", "IRQ", "ESP", "ARG", "CAN", 
  "UKR", "MAR", "POL","UZB");
+
+
+StringList countryCodesBar = new StringList("DZA","ARG","AUS","AUT","AZE","BGD","BLR","BEL","BRA","BGR","CAN","CHL","CHN","COL","HRV","CYP","CZE","DNK","ECU","EGY","EST","FIN","FRA","DEU","GRC","HKG","HUN","ISL","IND","IDN","IRN","IRQ","IRL","ISR","ITA","JPN","KAZ","KWT","LVA","LTU","LUX","MYS","MEX","MAR","NLD","NZL","MKD","NOR","OMN","PAK","PER","PHL","POL","PRT","QAT","ROU","RUS","SAU","SGP","SVK","SVN","ZAF","KOR","ESP","LKA","SWE","CHE","TWN","THA","TTO","TUR","TKM","USSR","UKR","ARE","GBR","USA","UZB","VEN","VNM");
 
 StringList worldRegions = new StringList("OWID_NAM","OWID_AFR","OWID_EUR","OWID_EU27","OWID_HIC","OWID_LMC","OWID_OCE","OWID_SAM","OWID_UMC","OWID_WRL");//Low income countries have no data
 Table data;
@@ -82,7 +85,7 @@ void setup(){
         }
     }
     // finds the highest energy output ever for each country
-    for(String code : countryCodes){
+    for(String code : countryCodesBar){
         println(code);
         float largest = 0;
         for(int year = 1965;year<2025;year++){
@@ -104,6 +107,11 @@ void draw(){
 
     stroke(0);
     line(graphWidth,0,graphWidth,height);
+    
+    //title
+    fill(0);
+    textAlign(CENTER,CENTER);
+    text("Energy Produced By Type",graphWidth/2,10);
 
     //key
     fill(255);
@@ -163,7 +171,7 @@ void draw(){
         text("select up to 8 countries",graphWidth+((width-graphWidth)/2),300);
         int x  = graphWidth;
         int y = 310;
-        for(String code : countryCodes){
+        for(String code : countryCodesBar){
             if(barChartCountries.hasValue(code)){
                 fill(100,255,30);
             }else{
@@ -194,7 +202,7 @@ void draw(){
         int x = graphLeftSide+110;
         int y = graphTop+50;
 
-            for(String code : useRegions ? worldRegions : countryCodes){ 
+            for(String code : useRegions ? worldRegions : countryCodesPie){ 
                 RowOfSources row = countryYearRowLookup.get(code+"_"+selectedYear);
                 if(row!=null){
                     PieChart piechart = new PieChart(row.otherRenewables,row.bioFuels,
@@ -288,7 +296,7 @@ void mousePressed() {
     if(!pieMode){
         int makeCountryButtonsx  = graphWidth;
         int makeCountryButtonsy = 310;
-        for(String code : countryCodes){
+        for(String code : countryCodesBar){
             if (mouseX > makeCountryButtonsx  && mouseX < makeCountryButtonsx+30 && mouseY > makeCountryButtonsy && mouseY < makeCountryButtonsy+15){
                 if(barChartCountries.hasValue(code)){
                     barChartCountries.removeValue(code);
